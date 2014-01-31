@@ -329,6 +329,14 @@ code {
   margin: 0px 4px 2px 4px;
 }
 
+.my-gwt-Button {
+  font-weight: plain;
+  background-color: #C3D9FF;
+  border: 2px solid transparent;
+  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
+  border-width:1px;
+}
+
 .gwt-Button:hover {
   margin: 0px 4px 2px 4px;
   height:22px;

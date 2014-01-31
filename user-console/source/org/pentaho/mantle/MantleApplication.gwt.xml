@@ -13,6 +13,7 @@
 	<inherits name='org.pentaho.platform.repository.usersettings.pojo.UserSettings'/>
 	<inherits name='org.pentaho.platform.plugin.services.pluginmgr.perspective.pojo.DefaultPluginPerspective'/>
     <inherits name='org.pentaho.gwt.widgets.Widgets'/>
+    <inherits name="com.github.gwtbootstrap.Bootstrap"/>
     <inherits name='org.pentaho.mantle.login.MantleLogin' />
     <inherits name="org.pentaho.platform.repository2.unified.webservices.IUnifiedRepositoryWebService"/>
     <inherits name='org.pentaho.gwt.widgets.client.filechooser.FileChooser'/>
@@ -22,7 +23,6 @@
     <generate-with class="org.pentaho.mantle.rebind.EventBusUtilGenerator" > 
         <when-type-assignable class="org.pentaho.mantle.client.events.EventBusUtil"/> 
     </generate-with>
-
     <set-property name="gwt.suppressNonStaticFinalFieldWarnings" value="true" /> 
 
 	<!-- Specify the app entry point class.                   -->

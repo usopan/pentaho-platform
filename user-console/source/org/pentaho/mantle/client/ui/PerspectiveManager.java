@@ -29,6 +29,7 @@ import org.pentaho.gwt.widgets.client.utils.i18n.ResourceBundle;
 import org.pentaho.mantle.client.MantleApplication;
 import org.pentaho.mantle.client.events.EventBusUtil;
 import org.pentaho.mantle.client.events.PerspectivesLoadedEvent;
+import org.pentaho.mantle.client.objects.CCCPermissions;
 import org.pentaho.mantle.client.objects.MantleXulOverlay;
 import org.pentaho.mantle.client.solutionbrowser.SolutionBrowserPanel;
 import org.pentaho.mantle.client.ui.CustomDropDown.MODE;
@@ -41,12 +42,15 @@ import org.pentaho.platform.plugin.services.pluginmgr.perspective.pojo.DefaultPl
 import org.pentaho.ui.xul.XulOverlay;
 import org.pentaho.ui.xul.gwt.util.ResourceBundleTranslator;
 
+import com.github.gwtbootstrap.client.ui.NavLink;
+import com.github.gwtbootstrap.client.ui.NavPills;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.JsArray;
 import com.google.gwt.core.client.JsArrayString;
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.core.client.RunAsyncCallback;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
@@ -57,12 +61,11 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.DeckPanel;
 import com.google.gwt.user.client.ui.Frame;
 import com.google.gwt.user.client.ui.HasText;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.MenuBar;
-import com.google.gwt.user.client.ui.MenuItem;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class PerspectiveManager extends SimplePanel {
+public class PerspectiveManager extends HorizontalPanel {
 
   private static final String ALLOW_TRANSPARENCY_ATTRIBUTE = "allowTransparency";
   private static final String REMOVE_IFRAME_BORDERS = "frameBorder";
@@ -79,8 +82,8 @@ public class PerspectiveManager extends SimplePanel {
   private static PerspectiveManager instance = new PerspectiveManager();
   
   private CustomDropDown perspectiveDropDown;
-  private HashMap<String, MenuItem> perspectiveMenuItemMap = new HashMap<String,MenuItem>();
-  
+  private HashMap<String, NavLink> perspectiveMenuItemMap = new HashMap<String,NavLink>();
+  private NavPills navBar = new NavPills();
   private PentahoMenuItem browserMenuItem;
   private PentahoMenuItem schedulesMenuItem;
 
@@ -97,9 +100,9 @@ public class PerspectiveManager extends SimplePanel {
   }
 
   private PerspectiveManager() {
-    getElement().setId("mantle-perspective-switcher");
-    setStyleName("mantle-perspective-switcher");
-
+//    getElement().setId("mantle-perspective-switcher");
+//    setStyleName("mantle-perspective-switcher");
+    
     final String url = GWT.getHostPageBaseURL() + "api/plugin-manager/perspectives?ts=" + System.currentTimeMillis(); //$NON-NLS-1$
     RequestBuilder builder = new RequestBuilder(RequestBuilder.GET, url);
     builder.setHeader("Content-Type", "application/json"); //$NON-NLS-1$//$NON-NLS-2$
@@ -173,37 +176,72 @@ public class PerspectiveManager extends SimplePanel {
       }
     });
 
-    MenuBar perspectiveMenuBar = new MenuBar(true);
-    perspectiveDropDown = new CustomDropDown("", perspectiveMenuBar, MODE.MAJOR);
-    setWidget(perspectiveDropDown);
-    loadResourceBundle(perspectiveDropDown, perspectives.get(0));
+    HorizontalPanel perspectiveMenuBar = new HorizontalPanel();
+    MenuBar noOp = new MenuBar();
+    perspectiveDropDown = new CustomDropDown("", noOp, MODE.MAJOR);
+    add(perspectiveMenuBar);
+//    loadResourceBundle(perspectiveDropDown, perspectives.get(0));
 
-    ScheduledCommand noopCmd = new ScheduledCommand() {
-      public void execute() {
-      }
-    };
-
+//    ScheduledCommand noopCmd = new ScheduledCommand() {
+//      public void execute() {
+//      }
+//    };
+    ClickHandler noCmdHandler = new ClickHandler() {
+    	  public void onClick(ClickEvent event) {
+    	  }
+    	};
+    	
+    	ClickHandler saikuOpener = new ClickHandler() {
+    		private native void openUrl(String title, String name, String uri)
+    		  /*-{
+    		    try {
+    		      $wnd.eval("openURL('"+name+"','"+title+"','"+uri+"')");
+    		    } catch (e) {
+    		      $wnd.mantle_showMessage("Javascript Error",e.message);
+    		    }
+    		  }-*/;
+			@Override
+			public void onClick(ClickEvent event) {
+				openUrl("Athena","Athena Analytics","content/saiku-ui/index.html?biplugin5=true");
+				
+			}
+    		
+    	
+  };
+  
     for (final IPluginPerspective perspective : perspectives) {
-
+    	if(!CCCPermissions.isCCCLogicAdmin() && (perspective.getId().equals(ADMIN_PERSPECTIVE) || perspective.getId().equals(SCHEDULES_PERSPECTIVE) || perspective.getId().endsWith("marketplace.perspective"))){
+    		continue;
+    	}
       // if we have overlays add it to the list
       if (perspective.getOverlays() != null) {
         overlays.addAll(perspective.getOverlays());
       }
 
-      final MenuItem menuItem = new MenuItem("", noopCmd);
+      final NavLink menuItem = new NavLink();
+      menuItem.addClickHandler(noCmdHandler);
+//      menuItem.getElement().addClassName("my-gwt-Button");
       perspectiveMenuItemMap.put(perspective.getId(), menuItem);
-      ScheduledCommand cmd = new ScheduledCommand() {
-        public void execute() {
-          showPerspective(perspective);
-          perspectiveDropDown.setText(menuItem.getText());
-          perspectiveDropDown.hidePopup();
-        }
-      };
-      menuItem.setScheduledCommand(cmd);
-      perspectiveMenuBar.addItem(menuItem);
+//      ScheduledCommand cmd = new ScheduledCommand() {
+//        public void execute() {
+//          showPerspective(perspective);
+//          perspectiveDropDown.setText(menuItem.getText());
+//          perspectiveDropDown.hidePopup();
+//        }
+//      };
+      ClickHandler cmd = new ClickHandler() {
+       	  public void onClick(ClickEvent event) {
+               showPerspective(perspective);
+       	  }
+       	};
+      menuItem.addClickHandler(cmd);
+      navBar.add(menuItem);
       loadResourceBundle(menuItem, perspective);
     }
-
+    NavLink athenaButton = new NavLink("Athena Analytics");
+    athenaButton.addClickHandler(saikuOpener);
+    navBar.add(athenaButton);
+    this.add(navBar);
     // register overlays with XulMainToolbar
     MantleXul.getInstance().addOverlays(overlays);
 
@@ -259,7 +297,7 @@ public class PerspectiveManager extends SimplePanel {
     // return value to indicate if perspective now disabled
     for (int i = 0; i < perspectives.size(); i++) {
       if (perspectives.get(i).getId().equalsIgnoreCase(perspectiveId)) {
-        perspectiveMenuItemMap.get(perspectiveId).setEnabled(enabled);
+//        perspectiveMenuItemMap.get(perspectiveId).setEnabled(enabled);
         return;
       }
     }
@@ -296,7 +334,7 @@ public class PerspectiveManager extends SimplePanel {
     if (!perspective.getTitle().startsWith("${")) {
       perspectiveDropDown.setText(perspective.getTitle());
     }
-    for (MenuItem m : perspectiveMenuItemMap.values()) {
+    for (NavLink m : perspectiveMenuItemMap.values()) {
       m.getElement().removeClassName("custom-dropdown-selected");
     }
     perspectiveMenuItemMap.get(perspective.getId()).getElement().addClassName("custom-dropdown-selected");
@@ -485,7 +523,7 @@ public class PerspectiveManager extends SimplePanel {
       this.schedulesMenuItem.setChecked(schedulesChecked);
     }
   }
-
+  
   public boolean isLoaded() {
     return loaded;
   }

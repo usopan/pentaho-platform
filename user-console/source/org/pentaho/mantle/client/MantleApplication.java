@@ -37,8 +37,10 @@ import org.pentaho.mantle.client.events.PerspectivesLoadedEventHandler;
 import org.pentaho.mantle.client.events.UserSettingsLoadedEvent;
 import org.pentaho.mantle.client.events.UserSettingsLoadedEventHandler;
 import org.pentaho.mantle.client.messages.Messages;
+import org.pentaho.mantle.client.objects.CCCPermissions;
 import org.pentaho.mantle.client.solutionbrowser.PluginOptionsHelper;
 import org.pentaho.mantle.client.solutionbrowser.SolutionBrowserPanel;
+import org.pentaho.mantle.client.ui.CCNameLabel;
 import org.pentaho.mantle.client.ui.PerspectiveManager;
 import org.pentaho.mantle.client.ui.UserDropDown;
 import org.pentaho.mantle.client.ui.xul.MantleXul;
@@ -246,6 +248,9 @@ public class MantleApplication implements UserSettingsLoadedEventHandler, Mantle
 
     mantleRevisionOverride = settings.get("user-console-revision");
     RootPanel.get("pucMenuBar").add(MantleXul.getInstance().getMenubar());
+    if(!CCCPermissions.isCCCLogicAdmin()) {
+    	RootPanel.get("pucMenuBar").setVisible(false);
+    }
     if (showOnlyPerspective && !StringUtils.isEmpty(startupPerspective)) {
       RootPanel.get("pucMenuBar").setVisible(false);
     }
@@ -260,11 +265,13 @@ public class MantleApplication implements UserSettingsLoadedEventHandler, Mantle
       RootPanel.get("pucToolBar").setVisible(false);
     }
 
-    RootPanel.get("pucUserDropDown").add(new UserDropDown());
+//    RootPanel.get("pucUserDropDown").add(new UserDropDown());
+    RootPanel.get("pucUserDropDown").add(new CCNameLabel());
     if (showOnlyPerspective && !StringUtils.isEmpty(startupPerspective)) {
       RootPanel.get("pucUserDropDown").setVisible(true);
     }
-    
+   
+   
     // update supported file types
     PluginOptionsHelper.buildEnabledOptionsList(settings);
 

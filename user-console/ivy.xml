@@ -26,7 +26,8 @@
         <dependency org="${ivy.artifact.group}" name="pentaho-platform-api"        rev="${project.revision}" conf="default->default" changing="true" transitive="false">
           <artifact name="pentaho-platform-api"/>
         </dependency>
-        <dependency org="${ivy.artifact.group}" name="pentaho-platform-core"  rev="${project.revision}" conf="default->default" changing="true" transitive="false"/>
+       
+         <dependency org="${ivy.artifact.group}" name="pentaho-platform-core"  rev="${project.revision}" conf="default->default" changing="true" transitive="false"/>
         <dependency org="${ivy.artifact.group}" name="pentaho-platform-repository" rev="${project.revision}" conf="default->default" changing="true" transitive="false">
           <artifact name="pentaho-platform-repository"/>
         </dependency>
@@ -41,6 +42,9 @@
         </dependency>
         <dependency org="${ivy.artifact.group}" name="pentaho-platform-extensions" rev="${project.revision}" conf="codegen->default" changing="true" transitive="false">
           <artifact name="pentaho-platform-extensions" type="source" ext="jar" m:classifier="sources"/>
+        </dependency>
+         <dependency org="${ivy.artifact.group}" name="pentaho-platform-core"  rev="${project.revision}" conf="codegen->default" changing="true" transitive="false">
+         <artifact name="pentaho-platform-core" type="source" ext="jar" m:classifier="sources"/>
         </dependency>
 
         <!-- The organization of GWT Widgets can not be varied since we do not create optimized versions of the GWT Widgets -->
@@ -60,7 +64,7 @@
         </dependency>
 		
 		<dependency org="GWT-FX" name="GWT-FX" rev="0.5.0" conf="codegen->default" transitive="false"/>
-        
+        <dependency org="com.github.gwtbootstrap" name="gwt-bootstrap" rev="2.0.4.0"/>
 		<dependency org="com.google.code.gwtx" name="gwtx" rev="1.5.2" conf="codegen->default" transitive="false"/>
         <dependency org="com.google.gwt" name="gwt-incubator" rev="${dependency.gwt-incubator.revision}" conf="codegen->default" transitive="false"/>
         <dependency org="com.allen_sauer" name="gwt-dnd" rev="${dependency.gwt-dnd.revision}"       conf="codegen->default" transitive="false"/>

@@ -18,8 +18,11 @@
  */
 package org.pentaho.mantle.client.ui;
 
+import java.util.Iterator;
+
 import org.pentaho.mantle.client.commands.LogoutCommand;
 import org.pentaho.mantle.client.messages.Messages;
+import org.pentaho.platform.engine.core.system.PentahoSessionHolder;
 
 import com.google.gwt.user.client.ui.MenuBar;
 import com.google.gwt.user.client.ui.MenuItem;
@@ -28,12 +31,17 @@ import com.google.gwt.user.client.ui.MenuItem;
 public class UserDropDown extends CustomDropDown {
   
   public UserDropDown() {
-    super(UserDropDown.getUsername(), null, MODE.MINOR);
+    super(UserDropDown.getCCCUserName(), null, MODE.MINOR);
     MenuBar menuBar = new MenuBar(true);
     menuBar.addItem(new MenuItem(Messages.getString("logout"), new LogoutCommand()));
     setMenuBar(menuBar);
   }
   
+  private static native String getCCCUserName()
+  /*-{
+	
+	  
+  }-*/;
   private static native String getUsername()
   /*-{  
     return window.top.SESSION_NAME;

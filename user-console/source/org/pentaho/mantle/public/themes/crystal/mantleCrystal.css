@@ -445,7 +445,13 @@ a:active, a:hover {
   border-color:#000000;
   border-width:1px;
 }
-
+.my-gwt-Button {
+  font-weight: plain;
+  background-color: #C3D9FF;
+  border: 2px solid transparent;
+  border-color: #E8F1FF rgb(157, 174, 205) rgb(157, 174, 205) rgb(232, 241, 255);
+  border-width:1px;
+}
 .gwt-Button:hover {
   background-image:url(../../buttonhoverbg.gif);
   background-image: expression('url(buttonhoverbg.gif)');

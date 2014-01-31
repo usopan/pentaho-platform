@@ -708,7 +708,7 @@ public class MantleController extends AbstractXulEventHandler {
   private native void executeMantleCall(String js)
   /*-{
     try{
-      $wnd.eval(js);
+      $wnd.eval
     } catch (e){
       $wnd.mantle_showMessage("Javascript Error",e.message+"\n\n"+js);
     }
