@@ -204,11 +204,40 @@ public class PerspectiveManager extends HorizontalPanel {
 			public void onClick(ClickEvent event) {
 				openUrl("Athena","Athena Analytics","content/saiku-ui/index.html?biplugin5=true");
 				
-			}
+			}	
     		
     	
   };
-  
+  ClickHandler cdrOpener = new ClickHandler() {
+		private native void openUrl(String title, String name, String uri)
+		  /*-{
+		    try {
+		      $wnd.eval("openURL('"+name+"','"+title+"','"+uri+"')");
+		    } catch (e) {
+		      $wnd.mantle_showMessage("Javascript Error",e.message);
+		    }
+		  }-*/;
+		@Override
+		public void onClick(ClickEvent event) {
+			openUrl("Call Data Record","Call Data Record","content/bir-res/bir.html?biplugin6=true&report=cdr");
+			
+		}
+		};
+		ClickHandler wfmOpener = new ClickHandler() {
+    		private native void openUrl(String title, String name, String uri)
+    		  /*-{
+    		    try {
+    		      $wnd.eval("openURL('"+name+"','"+title+"','"+uri+"')");
+    		    } catch (e) {
+    		      $wnd.mantle_showMessage("Javascript Error",e.message);
+    		    }
+    		  }-*/;
+			@Override
+			public void onClick(ClickEvent event) {
+				openUrl("Work Force Management","Work Force Management","content/bir-res/bir.html?biplugin6=true&report=wfm");
+				
+			}
+		};
     for (final IPluginPerspective perspective : perspectives) {
     	if(!CCCPermissions.isCCCLogicAdmin() && (perspective.getId().equals(ADMIN_PERSPECTIVE) || perspective.getId().equals(SCHEDULES_PERSPECTIVE) || perspective.getId().endsWith("marketplace.perspective"))){
     		continue;
@@ -241,6 +270,14 @@ public class PerspectiveManager extends HorizontalPanel {
     NavLink athenaButton = new NavLink("Athena Analytics");
     athenaButton.addClickHandler(saikuOpener);
     navBar.add(athenaButton);
+    this.add(navBar);
+    NavLink cdrButton = new NavLink("Call Data Record");
+    cdrButton.addClickHandler(cdrOpener);
+    navBar.add(cdrButton);
+    this.add(navBar);
+    NavLink wfmButton = new NavLink("Work Force Management");
+    wfmButton.addClickHandler(wfmOpener);
+    navBar.add(wfmButton);
     this.add(navBar);
     // register overlays with XulMainToolbar
     MantleXul.getInstance().addOverlays(overlays);
