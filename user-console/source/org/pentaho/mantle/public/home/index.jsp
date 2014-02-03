@@ -89,7 +89,7 @@
 
 <body data-spy="scroll" data-target=".sidebar">
 <div class="container-fluid main-container">
-  <div class="row-fluid">
+  <!--div class="row-fluid">
     <div class="span3" id="buttonWrapper">
         
             
@@ -100,7 +100,7 @@
             {{i18n.browse}}
           </button>
 
-          <!-- Only show create button if user is allowed -->
+          <!-- Only show create button if user is allowed 
 
           {{#if canCreateContent}}
           <button id="btnCreateNew" class="btn btn-large btn-block popover-source" data-toggle="dropdown"
@@ -123,11 +123,11 @@
         <div style="display:none" id="btnCreateNewContent"></div>
       </script>
 
-  </div>
+  </div>-->
 
 
 
-         <div class="row-fluid">
+         <!--div class="row-fluid">
          <div class='span12'>
           <script id="recentsTemplate" type="text/x-handlebars-template" delayCompile="true">
             <div id="recents" class="well widget-panel">
@@ -184,7 +184,7 @@
 
           <div id="recentsContianer"></div>
           </div>
-        </div>
+        </div-->
 
 
 
@@ -195,7 +195,7 @@
           <script id="favoritesTemplate" type="text/x-handlebars-template" delayCompile="true">
             <div id="favorites" class="well widget-panel">
               <h3>
-                {{i18n.favorites}}
+                Reports
               </h3>
               <div id="favoritesSpinner"></div>
               {{#if isEmpty}}
@@ -242,25 +242,11 @@
           <div id="favoritesContianer"></div>
 
         </div>
-      
-      
-      
       </div>
-
-
-
-
-
-    </div> 
-    <div class="span9" style="overflow:visible">
-
-      <div class="row-fluid welcome-container">
-      
-      <iframe src="content/welcome/index.html" class='welcome-frame' frameborder="0" scrolling="no"></iframe>
-            
-      </div>
-      
-    </div>
+	  
+	  <div class="main-footer" style="width:400px; margin:0 auto"><a href="http://www.3clogic.com/terms.html" target="_blank"><br>Terms Of Use</a> | <a href="http://www.3clogic.com/privacy.html" target="_blank">Privacy Statement </a> | <a href="http://www.3clogic.com/about_us.html" target="_blank">About Us </a> | <a href="http://3clogic.com/contact.html" target="_blank">Contact Us </a> <br>  &#169;3clogic</div>
+	  
+	</div> 
   </div>
 </div>
 

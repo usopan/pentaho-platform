@@ -16,7 +16,7 @@ pen.define(["common-ui/util/PentahoSpinner"], function(spin) {
     },
     displayContainerId: "favoritesContianer",
     contentPanelId: "favorites-content-panel",
-    serviceUrl: "api/user-settings/favorites",
+    serviceUrl: "plugin/cws/api/tenant/files",
     favoritesUrl: "api/user-settings/favorites",
     spinContainer: "favoritesSpinner",
 
