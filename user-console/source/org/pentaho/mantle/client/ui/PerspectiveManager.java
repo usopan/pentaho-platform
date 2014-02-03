@@ -27,6 +27,8 @@ import org.pentaho.gwt.widgets.client.menuitem.PentahoMenuItem;
 import org.pentaho.gwt.widgets.client.utils.i18n.IResourceBundleLoadCallback;
 import org.pentaho.gwt.widgets.client.utils.i18n.ResourceBundle;
 import org.pentaho.mantle.client.MantleApplication;
+import org.pentaho.mantle.client.commands.PurgeMondrianSchemaCacheCommand;
+import org.pentaho.mantle.client.commands.PurgeSaikuCacheCommand;
 import org.pentaho.mantle.client.events.EventBusUtil;
 import org.pentaho.mantle.client.events.PerspectivesLoadedEvent;
 import org.pentaho.mantle.client.objects.CCCPermissions;
@@ -238,6 +240,15 @@ public class PerspectiveManager extends HorizontalPanel {
 				
 			}
 		};
+		ClickHandler refreshDataCache = new ClickHandler() {
+
+			@Override
+			public void onClick(ClickEvent arg0) {
+				new PurgeMondrianSchemaCacheCommand().execute();
+				new PurgeSaikuCacheCommand().execute();
+			}
+			
+		};
     for (final IPluginPerspective perspective : perspectives) {
     	if(!CCCPermissions.isCCCLogicAdmin() && (perspective.getId().equals(ADMIN_PERSPECTIVE) || perspective.getId().equals(SCHEDULES_PERSPECTIVE) || perspective.getId().endsWith("marketplace.perspective"))){
     		continue;
@@ -267,17 +278,22 @@ public class PerspectiveManager extends HorizontalPanel {
       navBar.add(menuItem);
       loadResourceBundle(menuItem, perspective);
     }
+    // add Saiku button
     NavLink athenaButton = new NavLink("Athena Analytics");
     athenaButton.addClickHandler(saikuOpener);
     navBar.add(athenaButton);
-    this.add(navBar);
+    //add CDR button
     NavLink cdrButton = new NavLink("Call Data Record");
     cdrButton.addClickHandler(cdrOpener);
     navBar.add(cdrButton);
-    this.add(navBar);
+   // add WFM button
     NavLink wfmButton = new NavLink("Work Force Management");
     wfmButton.addClickHandler(wfmOpener);
     navBar.add(wfmButton);
+    // add refresh dataCache button
+    NavLink refreshMondrianButton = new NavLink("Refresh Reports");
+    refreshMondrianButton.addClickHandler(refreshDataCache);
+    navBar.add(refreshMondrianButton);
     this.add(navBar);
     // register overlays with XulMainToolbar
     MantleXul.getInstance().addOverlays(overlays);
