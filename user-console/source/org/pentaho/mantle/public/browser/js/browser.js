@@ -615,6 +615,7 @@ pen.define([
                 data: myself.model.get("foldersTreeModel").get("data"),
                 el: myself.$el.find("#fileBrowserFolders .body")
             });
+            
 
             this.fileListView = new FileBrowserFileListView({
                 model: myself.model.get("fileListModel"),
@@ -835,49 +836,49 @@ pen.define([
 
         render: function () {
             var myself = this,
-                data = myself.model.get("data");
-
-
-            //require folders template
-            pen.require(["js/browser.templates"], function (templates) {
-                //stop spinner
-                myself.model.set("runSpinner", false);
-
-                //append content
-                myself.$el.append(templates.folders(data));
-
-
-                //fix folder widths
-                $(".folder").each(function () {
-                    $(this).addClass("selected");
-                });
-
-                $(".element").each(function () {
-                    var $this = $(this);
-                    while ($this.height() > 20) {
-                        $this.width($this.width() + 20);
-                    }
-                });
-
-                $(".folder").each(function () {
-                    $(this).removeClass("selected");
-                });
-
-                //close all children folders
-                myself.$el.find(".folders").hide();
-
-
-                //handle empty folders
-                $(".folders").each(function () {
-                    if ($(this).children().length == 0) {
-                        $(this).parent().addClass("empty");
-                    }
-                });
-
-                //remove padding of first folder
-                myself.$el.children().each(function () {
-                    $(this).addClass("first");
-                });
+//                data = myself.model.get("data");
+//
+//
+//            //require folders template
+//            pen.require(["js/browser.templates"], function (templates) {
+//                //stop spinner
+//                myself.model.set("runSpinner", false);
+//
+//                //append content
+//                myself.$el.append(templates.folders(data));
+//
+//
+//                //fix folder widths
+//                $(".folder").each(function () {
+//                    $(this).addClass("selected");
+//                });
+//
+//                $(".element").each(function () {
+//                    var $this = $(this);
+//                    while ($this.height() > 20) {
+//                        $this.width($this.width() + 20);
+//                    }
+//                });
+//
+//                $(".folder").each(function () {
+//                    $(this).removeClass("selected");
+//                });
+//
+//                //close all children folders
+//                myself.$el.find(".folders").hide();
+//
+//
+//                //handle empty folders
+//                $(".folders").each(function () {
+//                    if ($(this).children().length == 0) {
+//                        $(this).parent().addClass("empty");
+//                    }
+//                });
+//
+//                //remove padding of first folder
+//                myself.$el.children().each(function () {
+//                    $(this).addClass("first");
+//                });
 
                 //set initial folder start
                 myself.setFolder();

@@ -3,8 +3,12 @@ package org.pentaho.mantle.client.ui;
 import org.pentaho.mantle.client.admin.JsCCCUserDetails;
 import org.pentaho.mantle.client.commands.LogoutCommand;
 
+import com.github.gwtbootstrap.client.ui.Divider;
 import com.github.gwtbootstrap.client.ui.NavLink;
+import com.github.gwtbootstrap.client.ui.NavList;
 import com.github.gwtbootstrap.client.ui.NavPills;
+import com.github.gwtbootstrap.client.ui.NavText;
+import com.github.gwtbootstrap.client.ui.constants.Alignment;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -13,26 +17,24 @@ import com.google.gwt.http.client.RequestBuilder;
 import com.google.gwt.http.client.RequestCallback;
 import com.google.gwt.http.client.RequestException;
 import com.google.gwt.http.client.Response;
-import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.VerticalPanel;
 
-public class CCNameLabel extends HorizontalPanel {
+public class CCNameLabel extends VerticalPanel {
 	private JsCCCUserDetails userDetails ;
-	private Label ccNameLabel;
-	private Label userNameLabel;
+	private NavText ccNameLabel;
+	private NavText userNameLabel;
 	public CCNameLabel() {
 		
 		userDetails = this.getDetails() ;
 		if(userDetails != null) {
-			ccNameLabel = new Label((userDetails.getCcname()));
-			userNameLabel = new Label((userDetails.getUsername()));
+			ccNameLabel = new NavText((userDetails.getCcname()));
+			userNameLabel = new NavText((userDetails.getUsername()));
 		} else {
-			ccNameLabel = new Label("CC Name");
-			userNameLabel = new Label("User Name");
+			ccNameLabel = new NavText("CC Name");
+			userNameLabel = new NavText("User Name");
 		}
 		
-		VerticalPanel labelPanel = new VerticalPanel();
+//		VerticalPanel labelPanel = new VerticalPanel();
 		NavPills navPills = new NavPills();
 		NavLink logoutToLsButton = new NavLink("Logout");
 		navPills.add(logoutToLsButton);
@@ -45,13 +47,20 @@ public class CCNameLabel extends HorizontalPanel {
 			}
 			
 		};
+		
 		logoutToLsButton.addClickHandler(logoutHandler);
-		labelPanel.add(userNameLabel);
-		labelPanel.add(ccNameLabel);
-		this.add(labelPanel);
-		this.add(navPills);
-		this.setSpacing(2);
-		this.addStyleName("puc-horizontal-split-panel .hsplitter");
+		userNameLabel.setAlignment(Alignment.LEFT);
+		userNameLabel.setHeight("10");
+		ccNameLabel.setAlignment(Alignment.LEFT);
+		ccNameLabel.setHeight("10");
+		this.add(userNameLabel);
+//		this.add(new Divider());
+		this.add(ccNameLabel);
+//		this.add(new Divider());
+//		this.add(labelPanel);
+		this.add(logoutToLsButton);
+//		this.setSpacing(2);
+//		this.addStyleName("puc-horizontal-split-panel .hsplitter");
 	}
 
 	public JsCCCUserDetails getDetails() 

@@ -162,7 +162,14 @@ public class PerspectiveManager extends HorizontalPanel {
 
     registerFunctions(this);
   }
-
+  private native void openUrl(String title, String name, String uri)
+  /*-{
+    try {
+      $wnd.eval("openURL('"+name+"','"+title+"','"+uri+"')");
+    } catch (e) {
+      $wnd.mantle_showMessage("Javascript Error",e.message);
+    }
+  }-*/;
   protected void setPluginPerspectives(final ArrayList<IPluginPerspective> perspectives) {
 
     this.perspectives = perspectives;
@@ -211,29 +218,15 @@ public class PerspectiveManager extends HorizontalPanel {
     	
   };
   ClickHandler cdrOpener = new ClickHandler() {
-		private native void openUrl(String title, String name, String uri)
-		  /*-{
-		    try {
-		      $wnd.eval("openURL('"+name+"','"+title+"','"+uri+"')");
-		    } catch (e) {
-		      $wnd.mantle_showMessage("Javascript Error",e.message);
-		    }
-		  }-*/;
 		@Override
 		public void onClick(ClickEvent event) {
 			openUrl("Call Data Record","Call Data Record","content/bir-res/bir.html?biplugin6=true&report=cdr");
 			
 		}
 		};
+		
 		ClickHandler wfmOpener = new ClickHandler() {
-    		private native void openUrl(String title, String name, String uri)
-    		  /*-{
-    		    try {
-    		      $wnd.eval("openURL('"+name+"','"+title+"','"+uri+"')");
-    		    } catch (e) {
-    		      $wnd.mantle_showMessage("Javascript Error",e.message);
-    		    }
-    		  }-*/;
+    		
 			@Override
 			public void onClick(ClickEvent event) {
 				openUrl("Work Force Management","Work Force Management","content/bir-res/bir.html?biplugin6=true&report=wfm");
@@ -250,9 +243,7 @@ public class PerspectiveManager extends HorizontalPanel {
 			
 		};
     for (final IPluginPerspective perspective : perspectives) {
-    	if(!CCCPermissions.isCCCLogicAdmin() && (perspective.getId().equals(ADMIN_PERSPECTIVE) || perspective.getId().equals(SCHEDULES_PERSPECTIVE) || perspective.getId().endsWith("marketplace.perspective"))){
-    		continue;
-    	}
+    	
       // if we have overlays add it to the list
       if (perspective.getOverlays() != null) {
         overlays.addAll(perspective.getOverlays());
@@ -275,8 +266,14 @@ public class PerspectiveManager extends HorizontalPanel {
        	  }
        	};
       menuItem.addClickHandler(cmd);
-      navBar.add(menuItem);
-      loadResourceBundle(menuItem, perspective);
+      if(!CCCPermissions.isCCCLogicAdmin() && (perspective.getId().equals(ADMIN_PERSPECTIVE) || perspective.getId().equals(SCHEDULES_PERSPECTIVE) || perspective.getId().endsWith("marketplace.perspective") || perspective.getId().equals(OPENED_PERSPECTIVE)|| perspective.getId().equals(BROWSER_PERSPECTIVE))){
+  		continue;
+  	}else{
+  		navBar.add(menuItem);
+  		loadResourceBundle(menuItem, perspective);
+  	}
+      
+      
     }
     // add Saiku button
     NavLink athenaButton = new NavLink("Athena Analytics");
@@ -291,9 +288,9 @@ public class PerspectiveManager extends HorizontalPanel {
     wfmButton.addClickHandler(wfmOpener);
     navBar.add(wfmButton);
     // add refresh dataCache button
-    NavLink refreshMondrianButton = new NavLink("Refresh Reports");
-    refreshMondrianButton.addClickHandler(refreshDataCache);
-    navBar.add(refreshMondrianButton);
+//    NavLink refreshMondrianButton = new NavLink("Refresh Reports");
+//    refreshMondrianButton.addClickHandler(refreshDataCache);
+//    navBar.add(refreshMondrianButton);
     this.add(navBar);
     // register overlays with XulMainToolbar
     MantleXul.getInstance().addOverlays(overlays);
